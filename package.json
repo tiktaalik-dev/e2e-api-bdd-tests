@@ -1,5 +1,7 @@
 {
+  "type": "module",
   "dependencies": {
+    "dotenv": "^17.4.2",
     "playwright": "^1.62.1",
     "prettify-bru": "^1.10.0"
   },
@@ -8,10 +10,14 @@
     "@cucumber/gherkin": "^42.0.1",
     "@playwright/test": "^1.62.1",
     "@types/node": "^26.4.0",
-    "@usebruno/cli": "^3.2.0"
+    "@usebruno/cli": "^4.1.0",
+    "csv-parse": "^7.0.2"
   },
   "allowScripts": {
     "protobufjs@7.6.6": true
   },
-  "scripts": {}
+  "scripts": {
+    "test": "npx playwright test",
+    "show-report": "npx playwright show-report e2e/reports/html"
+  }
 }
