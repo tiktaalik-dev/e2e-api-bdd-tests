@@ -15,14 +15,23 @@ class ProductsPage extends BasePage {
         this.listingSearchInput = this.page.getByRole('textbox', { name: 'Buscar Producto' })   ;
         this.listingSearchBtn = this.page.locator('button:has-text("Buscar Producto")');
         this.listingAllRowsCheckbox = this.page.locator("//th[@class='w-10 px-3 py-3.5 text-left border-b border-gray-200']//input[@aria-label='Seleccionar todos los de la página']");
+        this.listingFirstRowNameCell = this.page.locator("tbody tr:nth-child(1) td:nth-child(3)");
         this.listingFirstRowCheckbox = this.page.locator("//tbody/tr[1]/td[1]/input");
         this.listingFirstRowEditBtn = this.page.locator("//tbody/tr[1]/td[10]/div[1]/button[1]");
         this.listingFirstRowDeleteBtn = this.page.locator("//tbody/tr[1]/td[10]/div[1]/button[2]");
         this.listingFilterLineSelect = this.page.locator('button').filter({ hasText: 'Todas' }).first();
         this.listingFilterCategorySelect = this.page.locator('button').filter({ hasText: 'Todas' }).last();
 
+        // Then the elements in the View Product Details page
+        this.viewProductDetailsHeading = this.page.locator('h3:visible');
+        this.viewProductDetailsStockLink = this.page.getByRole('button', { name: 'Movimientos de Stock' });
+        this.viewProductDetailsStockFilterBtn = this.page.getByRole('button', { name: 'Filtrar' });
+        this.viewProductDetailsEditBtn = this.page.getByRole('button', { name: 'Editar' });
+        this.viewProductDetailsReturnLink = this.page.locator('button.p-1.mr-2.text-gray-600.rounded-full.hover\:bg-gray-100');
+
         // Then, the elements in the Add New Product page
         this.formSkuCodeInput = this.page.locator('#sku');
+        this.formSkuErrorMsg = this.page.getByText('El SKU debe tener el formato XXXX.XXXX.XXXX (12 dígitos)', { exact: true });
         this.formNameInput = this.page.locator('#name');
         this.formDescriptionInput = this.page.locator('#description');
         this.formLineSelect = this.page.locator('#line');
@@ -78,19 +87,80 @@ class ProductsPage extends BasePage {
         ]
     }
 
-    async createNewProduct() {
+    async createNewProduct(productData) {
+        // Click on the "Create New Product" button
+        await this.listingCreateProductBtn.click();
+
+        // Fill in the form fields with the provided product data.
+        // First, fill in the Main Information section
+        await this.fillInput(this.formSkuCodeInput, productData.sku_code);
+        await this.fillInput(this.formNameInput, productData.prod_name);
+        await this.fillInput(this.formDescriptionInput, productData.prod_description);
+        await this.selectOptionFromDropdown(this.formLineSelect, productData.prod_line);
+        await this.selectOptionFromDropdown(this.formCategorySelect, productData.prod_category);
+        await this.fillInput(this.formMeasurementUnitInput, productData.measurement_unit);
+        await this.selectOptionFromDropdown(this.formStatusSelect, productData.prod_status);
+        await this.fillInput(this.formLegacyNumberInput, productData.legacy_number);
+        await this.selectOptionFromDropdown(this.formOwnBrandInput, productData.own_brand);
+
+        // Then fill in the Prices and Costs section
+        await this.fillInput(this.formSalePriceInput, productData.sale_price);
+        await this.fillInput(this.formCostPriceInput, productData.cost_price);
+        await this.fillInput(this.formCostPriceDateInput, productData.cost_price_date);
+        await this.fillInput(this.formPurchasePriceInput, productData.purchase_price);
+        await this.fillInput(this.formPriceMultiplierInput, productData.price_multiplier);
+        await this.selectOptionFromDropdown(this.formCostCurrencyInput, productData.cost_currency);
+
+        // Then fill in the Stock Data section.
+        await this.fillInput(this.formStockQuantityInput, productData.stock_quantity);
+        await this.fillInput(this.formStockMinLevelInput, productData.stock_min_level);
+        await this.fillInput(this.formOnOrderQuantityInput, productData.on_order_quantity);
+        await this.fillInput(this.formSupplierDelayInput, productData.supplier_delay_days);
+        await this.fillInput(this.formBundleQuantityInput, productData.bundle_quantity);
+
+        // Fill in the Specific Product Taxes section
+        await this.clickBtn(this.formTaxCat1Checkbox);
+        await this.clickBtn(this.formTaxCat2Checkbox);
+        await this.clickBtn(this.formTaxCat3Checkbox);
+
+        // Finally, submit the form
+        await this.clickBtn(this.submitBtn);
     }
 
-    async createBulkNewProducts() {
+    async createBulkNewProducts(csvData) {
+        // Iterate over the CSV data and send each row to the createNewProduct method
+        for (const productData of csvData) {
+            await this.createNewProduct(productData);
+        }
     }
 
-    async searchProduct() {
+    async searchProduct(productName) {
+        // Fill in the Product Name in the listing Name Search input and press the Search button
+        await this.fillInput(this.listingSearchInput, productName);
+        await this.clickBtn(this.listingSearchBtn);
     }
 
-    async deleteProduct() {
+    async viewFirstResultProductDetails() {
+        // Then click on the first result
+        await this.clickBtn(this.listingFirstResultCell);
     }
 
-    async deleteBulkProducts() {
+    async deleteProduct(productName) {
+        // First, search for the product name
+        await this.searchProduct(productName);
+
+        // Then click on the Delete Product button
+        await this.clickBtn(this.listingFirstResultDeleteBtn);
+
+        // Then confirm the action in the modal dialogue
+        await this.clickBtn(this.deleteProductModalDeleteBtn);
+    }
+
+    async deleteBulkProducts(csvData) {
+        // Iterate over the CSV data and send each row to the deleteProduct method
+        for (const productData of csvData) {
+            await this.deleteProduct(productData.name);
+        }
     }
 }
 

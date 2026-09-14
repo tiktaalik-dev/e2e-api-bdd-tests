@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "dotenv": "^17.4.2",
     "playwright": "^1.62.1",
@@ -15,6 +16,8 @@
   "allowScripts": {
     "protobufjs@7.6.6": true
   },
-  "scripts": {},
-  "type": "module"
+  "scripts": {
+    "test": "npx playwright test",
+    "show-report": "npx playwright show-report e2e/reports/html"
+  }
 }

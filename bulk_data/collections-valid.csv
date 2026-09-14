@@ -1,0 +1,6 @@
+cuit,tax_situation,client_name,vat_witholder,exports_law_applies,invoice_serial,signup_date,collection_date,total_amount,payment_method,notes
+24-52169832-9,Consumidor Final,Tiktaalik Dev,No,No,B,06/09/2026,15/10/2026,15850.00,Efectivo,Pago de factura de compra de insumos
+20-83472915-4,Consumidor Final,Aconcagua Labs,Si,No,B,07/09/2026,16/10/2026,45200.50,Transferencia,Segundo pago del contrato mensual
+27-49821376-8,Consumidor Final,Pampa Digital,No,Si,B,08/09/2026,17/10/2026,32100.00,Cheque,Pago único de proyecto de desarrollo
+23-61590482-1,Consumidor Final,Sur Creativo,Si,Si,B,09/09/2026,18/10/2026,18750.75,Efectivo,Pago de factura pendiente de septiembre
+24-70938126-5,Consumidor Final,Litoral Market,No,No,B,10/09/2026,19/10/2026,29300.00,Transferencia,Primer pago de campaña de lanzamiento

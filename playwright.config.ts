@@ -1,5 +1,6 @@
 // Import basic libraries required for the test configuration
 import { defineConfig, devices } from '@playwright/test';
+import { fileURLToPath } from 'url';
 
 /**
  * Read environment variables from file.
@@ -7,6 +8,8 @@ import { defineConfig, devices } from '@playwright/test';
  */
 import dotenv from 'dotenv';
 import path from 'path';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, 'secrets/.env.development') });
 
 /**
@@ -35,7 +38,7 @@ export default defineConfig({
         ['json', { outputFile: 'e2e/reports/results.json' }]
       ],
   
-  /* Output directory for test artefacts */
+  /* Output directory for test artefacts (including videos) */
   outputDir: 'e2e/reports/videos',
 
   /* Directory for screenshots taken on test failure */
@@ -59,31 +62,119 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
      // 1. Setup project to log in
-      { name: 'setup', testMatch: /auth\.setup\.ts/ },
+      { name: 'setup-admin', testMatch: /auth\.admin\.setup\.js/ },
+      { name: 'setup-salesman', testMatch: /auth\.salesman\.setup\.js/ },
 
     // 2. Main tests that use the saved state
-      {
-      name: 'chromium',
-      use: {
-        // Use the state saved by the setup project
-        storageState: 'secrets/.auth/user.json',
-        ...devices['Desktop Chrome'] },
-        dependencies: ['setup'],
-      },
-      {
-      name: 'firefox',
-      use: {
-        storageState: 'secrets/.auth/user.json',
-        ...devices['Desktop Firefox'] },
-        dependencies: ['setup'],
-    },
-
+    // Salesman-specific tests (only run these in projects that have salesman state)
     {
-      name: 'webkit',
+      name: 'chromium-salesman',
+      testMatch: /.*\.salesman\.spec\.js$/, // Matches files like client-creation.salesman.spec.js
       use: {
-        storageState: 'secrets/.auth/user.json',
-        ...devices['Desktop Safari'] },
-        dependencies: ['setup'],
+        storageState: 'secrets/.auth/salesman.json',
+        ...devices['Desktop Chrome']
+      },
+      dependencies: ['setup-salesman'],
+    },
+    {
+      name: 'firefox-salesman',
+      testMatch: /.*\.salesman\.spec\.js$/,
+      use: {
+        storageState: 'secrets/.auth/salesman.json',
+        ...devices['Desktop Firefox']
+      },
+      dependencies: ['setup-salesman'],
+    },
+    {
+      name: 'webkit-salesman',
+      testMatch: /.*\.salesman\.spec\.js$/,
+      use: {
+        storageState: 'secrets/.auth/salesman.json',
+        ...devices['Desktop Safari']
+      },
+      dependencies: ['setup-salesman'],
+    },
+    // Admin-specific tests (only run these in projects that have admin state)
+    {
+      name: 'chromium-admin-creation',
+      testMatch: /.*-creation\.admin\.spec\.js$/, // Matches files like client-creation.admin.spec.js
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Chrome']
+      },
+      dependencies: ['setup-admin'],
+    },
+    {
+      name: 'chromium-admin-management',
+      testMatch: /.*-mgmt\.admin\.spec\.js$/, // Matches files like client-creation.admin.spec.js
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Chrome']
+      },
+      dependencies: ['setup-admin', 'chromium-admin-creation'],
+    },
+    {
+      name: 'chromium-admin-deletion',
+      testMatch: /.*-deletion\.admin\.spec\.js$/, // Matches files like client-creation.admin.spec.js
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Chrome']
+      },
+      dependencies: ['setup-admin', 'chromium-admin-creation', 'chromium-admin-mgmt'],
+    },
+    {
+      name: 'firefox-admin-creation',
+      testMatch: /.*-creation\.admin\.spec\.js$/,
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Firefox']
+      },
+      dependencies: ['setup-admin'],
+    },
+    {
+      name: 'firefox-admin-management',
+      testMatch: /.*-mgmt\.admin\.spec\.js$/,
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Firefox']
+      },
+      dependencies: ['setup-admin', 'firefox-admin-creation'],
+    },
+    {
+      name: 'firefox-admin-deletion',
+      testMatch: /.*-deletion\.admin\.spec\.js$/,
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Firefox']
+      },
+      dependencies: ['setup-admin', 'firefox-admin-creation', 'firefox-admin-mgmt'],
+    },
+    {
+      name: 'webkit-admin-creation',
+      testMatch: /.*-creation\.admin\.spec\.js$/,
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Safari']
+      },
+      dependencies: ['setup-admin'],
+    },
+    {
+      name: 'webkit-admin-management',
+      testMatch: /.*-mgmt\.admin\.spec\.js$/,
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Safari']
+      },
+      dependencies: ['setup-admin', 'webkit-admin-creation'],
+    },
+    {
+      name: 'webkit-admin-deletion',
+      testMatch: /.*-deletion\.admin\.spec\.js$/,
+      use: {
+        storageState: 'secrets/.auth/admin.json',
+        ...devices['Desktop Safari']
+      },
+      dependencies: ['setup-admin', 'webkit-admin-creation', 'webkit-admin-mgmt'],
     },
 
     /* Test against mobile viewports. */

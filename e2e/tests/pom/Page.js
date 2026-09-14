@@ -1,8 +1,12 @@
 // Import the required libraries
-import {Page} from 'playwright';
 import path from "path";
 import fs from "fs";
 import {parse} from "csv-parse/sync";
+import {fileURLToPath} from "url";
+
+// Define the __filename and __dirname variables
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class BasePage {
   constructor(page, url) {
@@ -11,12 +15,21 @@ class BasePage {
     this.url = url;
 
     // Initialise basic elements that are common to all pages
+    this.heading = this.page.getByRole('heading');
     this.endSessionBtn = this.page.getByRole('button', { name: 'Cerrar Sesión' });
     this.submitBtn = this.page.getByRole('button', { name: 'Guardar Cambios' });
 
     // Initialise the lists of elements that are not of type Text Input
     this.nonInputControls = [];
     this.checkboxControls = [];
+
+    // Define the variable that will hold the CSV data
+    this.clientData = {};
+  }
+
+  async goToURL(pageUrl = this.url) {
+    await this.page.goto(pageUrl);
+    await this.heading.waitFor();
   }
 
   loadCsv(csvFile) {
