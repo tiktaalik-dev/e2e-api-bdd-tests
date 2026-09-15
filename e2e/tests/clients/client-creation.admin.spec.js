@@ -78,7 +78,7 @@ test.describe.serial('Testing the creation of new clients (single event and in b
         await clientArea.searchClient(createdClientsNames[0]);
 
         // confirm that the name in the listing result is the same as the one in createdClientsNames[0]
-        expect(await clientArea.listingFirstResultCell).toHaveText(createdClientsNames[0]);
+        await expect(clientArea.listingFirstResultCell).toHaveText(createdClientsNames[0]);
     });
 
     test('Create multiple clients in bulk and return to listing page: ', async ({page}) => {

@@ -78,7 +78,7 @@ test.describe.serial('Testing the creation of new invoices (single event and in 
         await invoiceArea.searchInvoice(createdInvoicesNames[0]);
 
         // confirm that the name in the listing result is the same as the one in createdInvoicesNames[0]
-        expect(await invoiceArea.listingFirstResultCell).toHaveText(createdInvoicesNames[0]);
+        await expect(invoiceArea.listingFirstResultCell).toHaveText(createdInvoicesNames[0]);
     });
 
     // test('Create multiple invoices in bulk and return to listing page: ', async ({page}) => {

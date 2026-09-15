@@ -78,7 +78,7 @@ test.describe.serial('Testing the creation of new collections (single event and 
         await collectionArea.searchCollection(createdCollectionsNames[0]);
 
         // confirm that the name in the listing result is the same as the one in createdCollectionsNames[0]
-        expect(await collectionArea.listingFirstResultCell).toHaveText(createdCollectionsNames[0]);
+        await expect(collectionArea.listingFirstResultCell).toHaveText(createdCollectionsNames[0]);
     });
 
     test('Create multiple collections in bulk and return to listing page: ', async ({page}) => {

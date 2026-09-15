@@ -24,6 +24,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/bulk_data/collections-invalid.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/bulk_data/products-valid.csv">
           <value>
             <Attribute>
