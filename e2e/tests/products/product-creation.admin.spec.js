@@ -78,7 +78,7 @@ test.describe.serial('Testing the creation of new products (single event and in 
         await productArea.searchProduct(createdProductsNames[0]);
 
         // confirm that the name in the listing result is the same as the one in createdProductsNames[0]
-        expect(await productArea.listingFirstResultCell).toHaveText(createdProductsNames[0]);
+        await expect(productArea.listingFirstResultCell).toHaveText(createdProductsNames[0]);
     });
 
     test('Create multiple products in bulk and return to listing page: ', async ({page}) => {

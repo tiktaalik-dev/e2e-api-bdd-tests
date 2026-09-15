@@ -120,7 +120,7 @@ export default defineConfig({
         storageState: 'secrets/.auth/admin.json',
         ...devices['Desktop Chrome']
       },
-      dependencies: ['setup-admin', 'chromium-admin-creation', 'chromium-admin-mgmt'],
+      dependencies: ['setup-admin', 'chromium-admin-creation', 'chromium-admin-management'],
     },
     {
       name: 'firefox-admin-creation',
@@ -147,7 +147,7 @@ export default defineConfig({
         storageState: 'secrets/.auth/admin.json',
         ...devices['Desktop Firefox']
       },
-      dependencies: ['setup-admin', 'firefox-admin-creation', 'firefox-admin-mgmt'],
+      dependencies: ['setup-admin', 'firefox-admin-creation', 'firefox-admin-management'],
     },
     {
       name: 'webkit-admin-creation',
@@ -174,7 +174,7 @@ export default defineConfig({
         storageState: 'secrets/.auth/admin.json',
         ...devices['Desktop Safari']
       },
-      dependencies: ['setup-admin', 'webkit-admin-creation', 'webkit-admin-mgmt'],
+      dependencies: ['setup-admin', 'webkit-admin-creation', 'webkit-admin-management'],
     },
 
     /* Test against mobile viewports. */
