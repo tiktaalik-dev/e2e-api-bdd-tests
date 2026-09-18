@@ -19,8 +19,8 @@ Files are organised as tests, specs, POM (Page Object Model), test reports, and 
 ├── bulk_data/
 │   ├── clients-invalid.csv
 │   ├── clients-valid.csv
-│   ├── collection-invalid.csv
-│   ├── collection-valid.csv
+│   ├── collections-invalid.csv
+│   ├── collections-valid.csv
 │   ├── invoices-invalid.csv
 │   ├── invoices-valid.csv
 │   ├── products-invalid.csv
@@ -36,17 +36,17 @@ Files are organised as tests, specs, POM (Page Object Model), test reports, and 
 │       │   ├── clients-creation.spec.js
 │       │   ├── clients-deletion.spec.js
 │       │   └── clients-mgmt.spec.js
-│       ├── collection/
-│       │   ├── collection-creation.spec.js
-│       │   ├── collection-deletion.spec.js
-│       │   └── collection-mgmt.spec.js
+│       ├── collections/
+│       │   ├── collections-creation.spec.js
+│       │   ├── collections-deletion.spec.js
+│       │   └── collections-mgmt.spec.js
 │       ├── invoices/
 │       │   ├── invoices-creation.spec.js
 │       │   ├── invoices-deletion.spec.js
 │       │   └── invoices-mgmt.spec.js
 │       ├── pom/
 │       │   ├── ClientsPage.js
-│       │   ├── CollectionPage.js
+│       │   ├── CollectionsPage.js
 │       │   ├── InvoicesPage.js
 │       │   ├── LoginPage.js
 │       │   ├── Page.js
@@ -145,10 +145,8 @@ These tests run against a live ERP, but they only manage and delete records that
 ```bash
 npm test                                     # Runs all tests
 npm run test:headed                          # Runs in headed mode
-npx playwright test --grep @smoke            # Runs only smoke tests
-npx playwright test --grep @regression       # Runs only regression tests
 npx playwright test clients/           # Runs tests in a single feature folder
-npx playwright test clients/clients-creation.spec.js # Runs a single test spec file
+npx playwright test clients/clients-creation.spec.js --project=firefox-admin-creation # Runs a single test spec file using only the Firefox browser
 npm run report                               # Opens the last HTML report
 ```
 

@@ -94,8 +94,8 @@ class ClientsPage extends BasePage {
             'URUGUAY'
         ]
         this.formPhoneNumberInput = this.page.locator('#phone');
-        this.formWhatsAppInput = this.page.getByLabel('WhatsApp');
-        this.formEmailInput = this.page.getByLabel('email');
+        this.formWhatsAppInput = this.page.locator('#whatsapp');
+        this.formEmailInput = this.page.locator('#email');
         this.formContactPersonInput = this.page.locator('#contact');
         this.formBusinessCategoryInput = this.page.locator('#rubro');
         this.formAssignedSalesmanCodeInput = this.page.locator("//div[10]//div[1]//div[1]//div[1]//input[1]");
@@ -165,14 +165,14 @@ class ClientsPage extends BasePage {
         this.formTaxCat3Checkbox = this.page.locator('#tax-3');
         this.formTaxCatMisionesCheckbox = this.page.locator('#tax-12');
         this.formTaxCatMisiones2Checkbox = this.page.locator('#tax-45');
-        this.returnBtn = this.page.getByRole('button', { name: 'Volver' });
+        this.formReturnBtn = this.page.getByRole('button', { name: 'Volver' });
 
         // Override the submitBtn property from the parent class
         this.submitBtn = this.page.getByRole('button', { name: 'Guardar Cambios' });
 
         // Initialise the Client CSV files that will be used for bulk data upload
-        this.validCsv = this.loadCsv('../../../bulk_data/clients-valid.csv');
-        this.invalidCsv = this.loadCsv('../../../bulk_data/clients-invalid.csv');
+        this.validCsv = '../../../bulk_data/clients-valid.csv';
+        this.invalidCsv = '../../../bulk_data/clients-invalid.csv';
 
         // Alias the submitNewItem and the bulkSubmitNewItems methods from the parent class
         this.submitNewClient = super.submitNewItem;
@@ -206,11 +206,11 @@ class ClientsPage extends BasePage {
         // Fill in the form fields with the provided client data.
         // First, fill in the Basic Data section
         await this.fillInput(this.formCuitInput, clientData.cuit);
-        await this.selectOptionFromDropdown(this.formTaxSituationSelect, clientData.tax_situation);
+        await this.selectOptionFromDropdown(this.formTaxSituationSelect, {label: clientData.tax_situation});
         await this.fillInput(this.formLegalNameInput, clientData.client_name);
-        await this.selectOptionFromDropdown(this.formVatWithholderSelect, clientData.vat_witholder);
-        await this.selectOptionFromDropdown(this.formExportsLawAppliesSelect, clientData.exports_law_applies);
-        await this.selectOptionFromDropdown(this.formInvoiceSerialSelect, clientData.invoice_serial);
+        await this.selectOptionFromDropdown(this.formVatWithholderSelect, {label: clientData.vat_witholder});
+        await this.selectOptionFromDropdown(this.formExportsLawAppliesSelect, {label: clientData.exports_law_applies});
+        await this.selectOptionFromDropdown(this.formInvoiceSerialSelect, {label: clientData.invoice_serial});
         await this.fillInput(this.formSignUpDateInput, clientData.signup_date);
 
         // Then click on the Search Currency button and select the first one on the modal form that appears then
@@ -221,7 +221,7 @@ class ClientsPage extends BasePage {
         await this.fillInput(this.formLegalAddressInput, clientData.legal_address);
         await this.fillInput(this.formPostCodeInput, clientData.post_code);
         await this.fillInput(this.formCityInput, clientData.city);
-        await this.selectOptionFromDropdown(this.formDistrictSelect, clientData.district);
+        await this.selectOptionFromDropdown(this.formDistrictSelect, {label: clientData.district});
         await this.fillInput(this.formPhoneNumberInput,clientData.phone_number);
         await this.fillInput(this.formWhatsAppInput,clientData.whatsapp);
         await this.fillInput(this.formEmailInput,clientData.email);
@@ -233,13 +233,13 @@ class ClientsPage extends BasePage {
         await this.clickBtn(this.formAssignedSalesmanModalFirstResultCell);
 
         // Click on the Buyer Name Search button and select the first one on the modal form that appears then
-        await this.clickBtn(this.form);
+        await this.clickBtn(this.formBuyerNameSearchBtn);
         await this.clickBtn(this.formBuyerModalFirstResultCell);
 
         // Then fill in the Delivery Data section. First click on the Add Address button and input data
         await this.clickBtn(this.formDeliveryAddAddressBtn);
         await this.fillInput(this.formDeliveryAddressInput, clientData.delivery_address);
-        await this.selectOptionFromDropdown(this.formDeliveryZoneSelect, clientData.delivery_city);
+        await this.selectOptionFromDropdown(this.formDeliveryZoneSelect, {label: clientData.delivery_city});
 
         // Click on the Delivery Name Search button and select the first result
         await this.clickBtn(this.formDeliveryServiceNameSearchBtn);
@@ -267,17 +267,17 @@ class ClientsPage extends BasePage {
         await this.fillInput(this.formCollectionPaydayInput, clientData.collection_payday);
         await this.fillInput(this.formCollectionCreditLimitInput, clientData.collection_credit_limit);
         await this.fillInput(this.formCollectionTaxExemptionInput, clientData.collection_tax_exemption);
-        await this.selectOptionFromDropdown(this.formCollectionFceTaxSelect, clientData.collection_fce_tax);
-        await this.selectOptionFromDropdown(this.formCollectionFrozenClientSelect, clientData.collection_frozen_client);
-        await this.selectOptionFromDropdown(this.formCollectionProspectSelect, clientData.collection_prospect);
-        await this.selectOptionFromDropdown(this.formCollectionVatCertificateSelect, clientData.collection_vat_certificate);
+        await this.selectOptionFromDropdown(this.formCollectionFceTaxSelect, {label: clientData.collection_fce_tax});
+        await this.selectOptionFromDropdown(this.formCollectionFrozenClientSelect, {label: clientData.collection_frozen_client});
+        await this.selectOptionFromDropdown(this.formCollectionProspectSelect, {label: clientData.collection_prospect});
+        await this.selectOptionFromDropdown(this.formCollectionVatCertificateSelect, {label: clientData.collection_vat_certificate});
 
         // Fill in the Taxes and Client Withholding section
-        await this.selectOptionFromDropdown(this.formTaxCat1Checkbox, clientData.tax_cat_1);
-        await this.selectOptionFromDropdown(this.formTaxCat2Checkbox, clientData.tax_cat_2);
-        await this.selectOptionFromDropdown(this.formTaxCat3Checkbox, clientData.tax_cat_3);
-        await this.selectOptionFromDropdown(this.formTaxCatMisionesCheckbox, clientData.tax_cat_misiones);
-        await this.selectOptionFromDropdown(this.formTaxCatMisiones2Checkbox, clientData.tax_cat_misiones2);
+        await this.fillCheckbox(this.formTaxCat1Checkbox, {label: clientData.tax_cat_1});
+        await this.fillCheckbox(this.formTaxCat2Checkbox, {label: clientData.tax_cat_2});
+        await this.fillCheckbox(this.formTaxCat3Checkbox, {label: clientData.tax_cat_3});
+        await this.fillCheckbox(this.formTaxCatMisionesCheckbox, {label: clientData.tax_cat_misiones});
+        await this.fillCheckbox(this.formTaxCatMisiones2Checkbox, {label: clientData.tax_cat_misiones2});
 
         // Finally, submit the form
         await this.clickBtn(this.submitBtn);
