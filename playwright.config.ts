@@ -97,7 +97,7 @@ export default defineConfig({
     // Admin-specific tests (only run these in projects that have admin state)
     {
       name: 'chromium-admin-creation',
-      testMatch: /.*-creation\.admin\.spec\.js$/, // Matches files like client-creation.admin.spec.js
+      testMatch: /.*-creation\.admin\.spec\.js$/,
       use: {
         storageState: 'secrets/.auth/admin.json',
         ...devices['Desktop Chrome']
@@ -106,7 +106,7 @@ export default defineConfig({
     },
     {
       name: 'chromium-admin-management',
-      testMatch: /.*-mgmt\.admin\.spec\.js$/, // Matches files like client-creation.admin.spec.js
+      testMatch: /.*-mgmt\.admin\.spec\.js$/,
       use: {
         storageState: 'secrets/.auth/admin.json',
         ...devices['Desktop Chrome']
@@ -115,7 +115,7 @@ export default defineConfig({
     },
     {
       name: 'chromium-admin-deletion',
-      testMatch: /.*-deletion\.admin\.spec\.js$/, // Matches files like client-creation.admin.spec.js
+      testMatch: /.*-deletion\.admin\.spec\.js$/,
       use: {
         storageState: 'secrets/.auth/admin.json',
         ...devices['Desktop Chrome']

@@ -65,8 +65,8 @@ class CollectionsPage extends BasePage {
         this.bulkSubmitNewCollections = super.bulkSubmitNewItems;
 
         // Initialise the Client CSV files that will be used for bulk data upload
-        this.validCsv = this.loadCsv('../../../bulk_data/collections-valid.csv');
-        this.invalidCsv = this.loadCsv('../../../bulk_data/collections-invalid.csv');
+        this.validCsv = '../../../bulk_data/collections-valid.csv';
+        this.invalidCsv = '../../../bulk_data/collections-invalid.csv';
 
         // Define the page elements that are not of type Input in the "Add New collection" form
         this.nonInputControls = [

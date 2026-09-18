@@ -68,8 +68,8 @@ class ProductsPage extends BasePage {
         this.bulkSubmitNewProducts = super.bulkSubmitNewItems;
         
         // Initialise the Client CSV files that will be used for bulk data upload
-        this.validCsv = this.loadCsv('../../../bulk_data/products-valid.csv');
-        this.invalidCsv = this.loadCsv('../../../bulk_data/products-invalid.csv');
+        this.validCsv = '../../../bulk_data/products-valid.csv';
+        this.invalidCsv = '../../../bulk_data/products-invalid.csv';
 
         // Define the page elements that are not of type Input in the "Add New Product" form
         this.nonInputControls = [

@@ -86,7 +86,7 @@ test.describe.serial('Testing the creation of new clients (single event and in b
         await clientArea.goToURL();
 
         // Call the bulkCreateClients method with the full client data object
-        await clientArea.bulkCreateClients(allClients);
+        await clientArea.createBulkNewClients(allClients);
 
         // Store the names of the created clients in the global variable
         createdClientsNames.push(...allClients.map(client => client.name));

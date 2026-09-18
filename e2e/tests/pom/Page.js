@@ -29,7 +29,6 @@ class BasePage {
 
   async goToURL(pageUrl = this.url) {
     await this.page.goto(pageUrl);
-    await this.heading.waitFor();
   }
 
   loadCsv(csvFile) {

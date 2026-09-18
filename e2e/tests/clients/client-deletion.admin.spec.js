@@ -36,7 +36,7 @@ test.describe.serial('Testing the deletion of existing clients (single event and
         firstClientData = allClients[0];
         clientNamesToDelete.push(firstClientData.name);
 
-        // Search for the client we want to delete
+        // Search for the client to delete
         await clientArea.searchClient(clientNamesToDelete[0]);
 
         // confirm that the name in the listing result is the same as the one in clientNamesToDelete[0]
