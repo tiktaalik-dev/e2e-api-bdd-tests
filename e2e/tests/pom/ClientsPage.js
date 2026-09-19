@@ -13,7 +13,7 @@ class ClientsPage extends BasePage {
         this.listingCreateClientBtn = this.page.getByRole('button', { name: 'Crear Cliente' });
         this.listingSearchInput = this.page.getByRole('textbox', { name: 'Buscar' })   ;
         this.listingSearchBtn = this.page.locator('button:has-text("Buscar")');
-        this.listingFirstResultCell = this.page.locator("td:nth-child(2)");
+        this.listingFirstResultCell = this.page.locator("td:nth-child(2)").first();
         this.listingFirstResultViewDetailsHeading = this.page.locator('h3:visible');
         this.listingFirstResultEditBtn = this.page.locator("//tbody/tr[1]/td[10]/div[1]/button[1]");
         this.listingFirstResultDeleteBtn = this.page.locator("//tbody/tr[1]/td[10]/div[1]/button[2]");

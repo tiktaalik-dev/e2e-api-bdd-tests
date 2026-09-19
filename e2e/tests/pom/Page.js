@@ -16,6 +16,7 @@ class BasePage {
 
     // Initialise basic elements that are common to all pages
     this.heading = this.page.getByRole('heading');
+    this.searchWaitingSpinner = this.page.locator('div.border-4.border-dashed.rounded-full.animate-spin.border-indigo-600.w-8.h-8:visible');
     this.endSessionBtn = this.page.getByRole('button', { name: 'Cerrar Sesión' });
     this.submitBtn = this.page.getByRole('button', { name: 'Guardar Cambios' });
 
