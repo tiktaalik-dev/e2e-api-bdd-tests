@@ -61,7 +61,7 @@ test.describe.serial('Testing the creation of a new products: ', () => {
         // Load the CSV file and select only the first row, then store the product name in the global variable
         allProducts = await productArea.loadCsv(productArea.validCsv);
         firstProductData = allProducts[0];
-        createdProductsNames.push(firstProductData.name);
+        createdProductsNames.push(firstProductData.prod_name);
 
         // Call the createNewProduct method with the full product data object
         await productArea.createNewProduct(firstProductData);
