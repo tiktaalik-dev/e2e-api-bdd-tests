@@ -1,1 +1,0 @@
-This file is here just to ensure that git will track this directory. This is necessary because the tests will use this directory to store the HTML report after each test run.
