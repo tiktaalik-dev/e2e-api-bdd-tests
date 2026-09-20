@@ -1,6 +1,6 @@
 sku_code,prod_name,prod_description,prod_line,prod_category,measurement_unit,prod_status,legacy_number,own_brand,sale_price,cost_price,cost_price_date,purchase_price,price_multiplier,cost_currency,stock_quantity,stock_min_level,on_order_quantity,supplier_delay_days,bundle_quantity
-ABCD.1234.WXYZ,Alimento Balanceado Vacas,Alimento balanceado para ganado vacuno de engorde,LÍNEA 1,CATEGORÍA 1,Kilogramos,Activo,LEG001,Sí,12500.50,8200.00,2024-01-15,7800.00,1.60,Pesos (ARS),150,30,50,14,25
-WXYZ.5678.ABCD,Medicamento Antibiótico Avícola,Antibiótico de amplio espectro para aves de corral,LÍNEA 1,CATEGORÍA 1,Unidades,Activo,LEG002,Sí,320.75,180.00,2024-02-20,165.00,1.78,Pesos (ARS),500,100,200,7,10
-LMNO.9012.PQRS,Repelente Insectos Ganado,Repelente de mosca y garrapata para bovinos,LÍNEA 1,CATEGORÍA 1,Litros,Activo,LEG003,No,4500.00,2900.00,2024-03-10,2700.00,1.55,Dólares (USD),80,20,30,21,5
-STUV.3456.WXYZ,Suplemento Mineral Ovino,Suplemento mineral para mejora de lana en ovinos,LÍNEA 1,CATEGORÍA 1,Bolsa 25kg,Activo,LEG004,Sí,8900.25,5600.00,2024-04-05,5200.00,1.59,Pesos (ARS),120,25,45,18,12
-IJKL.7890.MNOP,Desinfectante Establos,Desinfectante concentrado para limpieza de instalaciones ganaderas,LÍNEA 1,CATEGORÍA 1,Litros,Activo,LEG005,No,3750.00,2100.00,2024-05-12,1950.00,1.79,Pesos (ARS),200,40,75,10,20
+5678.1234.0912,Alimento Balanceado Vacas,Alimento balanceado para ganado vacuno de engorde,LINEA 1,CATEGORIA 1,Kilogramos,Activo,LEG001,Si,12500.50,8200.00,2024-01-15,7800.00,1.60,Pesos (ARS),150,30,50,14,25
+5597.5678.5682,Medicamento Antibiótico Avícola,Antibiótico de amplio espectro para aves de corral,LINEA 1,CATEGORIA 1,Unidades,Activo,LEG002,Si,320.75,180.00,2024-02-20,165.00,1.78,Pesos (ARS),500,100,200,7,10
+6437.9012.3591,Repelente Insectos Ganado,Repelente de mosca y garrapata para bovinos,LINEA 1,CATEGORIA 1,Litros,Activo,LEG003,No,4500.00,2900.00,2024-03-10,2700.00,1.55,Dólares (USD),80,20,30,21,5
+5533.3456.1964,Suplemento Mineral Ovino,Suplemento mineral para mejora de lana en ovinos,LINEA 1,CATEGORIA 1,Bolsa 25kg,Activo,LEG004,Si,8900.25,5600.00,2024-04-05,5200.00,1.59,Pesos (ARS),120,25,45,18,12
+8879.7890.0869,Desinfectante Establos,Desinfectante concentrado para limpieza de instalaciones ganaderas,LINEA 1,CATEGORIA 1,Litros,Activo,LEG005,No,3750.00,2100.00,2024-05-12,1950.00,1.79,Pesos (ARS),200,40,75,10,20

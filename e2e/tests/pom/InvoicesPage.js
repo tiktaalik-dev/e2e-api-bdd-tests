@@ -15,7 +15,7 @@ class InvoicesPage extends BasePage {
         this.listingEndDateSearchInput = this.page.locator('#end-date');
         this.listingSearchInput = this.page.locator('#search-term');
         this.listingSearchBtn = this.page.getByRole('button', { name: 'Buscar' });
-        this.listingFirstResultCell = this.page.locator("td:nth-child(2)");
+        this.listingFirstResultCell = this.page.locator("td:nth-child(2)").first();
         this.listingFirstRowEditBtn = this.page.locator("//tbody/tr[1]/td[7]/div[1]/button[1]");
         this.listingFirstRowDeleteBtn = this.page.locator("//tbody/tr[1]/td[7]/div[1]/button[2]");
 

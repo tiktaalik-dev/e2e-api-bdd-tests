@@ -11,11 +11,11 @@ class ProductsPage extends BasePage {
         // First, the elements of the listing page
         this.listingPageHeading = this.page.getByRole('heading', { name: 'Listado de Artículos' });
         this.listingAdjustPriceBtn = this.page.getByRole('button', { name: 'Ajustar Precio' });
-        this.listingCreateProductBtn = this.page.getByRole('button', { name: 'Crear Producto' });
-        this.listingSearchInput = this.page.getByRole('textbox', { name: 'Buscar Producto' })   ;
-        this.listingSearchBtn = this.page.locator('button:has-text("Buscar Producto")');
+        this.listingCreateProductBtn = this.page.getByRole('button', { name: 'Crear Artículo' });
+        this.listingSearchInput = this.page.getByRole('textbox', { name: 'Buscar' });
+        this.listingSearchBtn = this.page.locator('button').filter({ hasText: 'Buscar' });
         this.listingAllRowsCheckbox = this.page.locator("//th[@class='w-10 px-3 py-3.5 text-left border-b border-gray-200']//input[@aria-label='Seleccionar todos los de la página']");
-        this.listingFirstRowNameCell = this.page.locator("tbody tr:nth-child(1) td:nth-child(3)");
+        this.listingFirstResultCell = this.page.locator("tbody tr:nth-child(1) td:nth-child(3)").first();
         this.listingFirstRowCheckbox = this.page.locator("//tbody/tr[1]/td[1]/input");
         this.listingFirstRowEditBtn = this.page.locator("//tbody/tr[1]/td[10]/div[1]/button[1]");
         this.listingFirstRowDeleteBtn = this.page.locator("//tbody/tr[1]/td[10]/div[1]/button[2]");
@@ -51,10 +51,10 @@ class ProductsPage extends BasePage {
         this.formCostCurrencyInput = this.page.locator('#cost_currency');
         this.formCostCurrencyOptions = ['Pesos (ARS)', 'Dólares (USD)'];
         this.formStockQuantityInput = this.page.locator('#stock_quantity');
-        this.formStockMinLevelInput = this.page.locator('#stock_min_level');
+        this.formStockMinLevelInput = this.page.locator('#min_stock_level');
         this.formOnOrderQuantityInput = this.page.locator('#on_order_quantity');
         this.formSupplierDelayInput = this.page.locator('#supplier_delay_days');
-        this.formBundleQuantityInput = this.page.locator('#bundle_quantity');
+        this.formBundleQuantityInput = this.page.locator('#quantity_per_bundle');
         this.formTaxCat1Checkbox = this.page.locator('#tax-1');
         this.formTaxCat2Checkbox = this.page.locator('#tax-2');
         this.formTaxCat3Checkbox = this.page.locator('#tax-3');
@@ -96,12 +96,12 @@ class ProductsPage extends BasePage {
         await this.fillInput(this.formSkuCodeInput, productData.sku_code);
         await this.fillInput(this.formNameInput, productData.prod_name);
         await this.fillInput(this.formDescriptionInput, productData.prod_description);
-        await this.selectOptionFromDropdown(this.formLineSelect, productData.prod_line);
-        await this.selectOptionFromDropdown(this.formCategorySelect, productData.prod_category);
+        await this.selectOptionFromDropdown(this.formLineSelect, {label: productData.prod_line});
+        await this.selectOptionFromDropdown(this.formCategorySelect, {label: productData.prod_category});
         await this.fillInput(this.formMeasurementUnitInput, productData.measurement_unit);
-        await this.selectOptionFromDropdown(this.formStatusSelect, productData.prod_status);
+        await this.selectOptionFromDropdown(this.formStatusSelect, {label: productData.prod_status});
         await this.fillInput(this.formLegacyNumberInput, productData.legacy_number);
-        await this.selectOptionFromDropdown(this.formOwnBrandInput, productData.own_brand);
+        await this.selectOptionFromDropdown(this.formOwnBrandInput, {label: productData.own_brand});
 
         // Then fill in the Prices and Costs section
         await this.fillInput(this.formSalePriceInput, productData.sale_price);
@@ -109,7 +109,7 @@ class ProductsPage extends BasePage {
         await this.fillInput(this.formCostPriceDateInput, productData.cost_price_date);
         await this.fillInput(this.formPurchasePriceInput, productData.purchase_price);
         await this.fillInput(this.formPriceMultiplierInput, productData.price_multiplier);
-        await this.selectOptionFromDropdown(this.formCostCurrencyInput, productData.cost_currency);
+        await this.selectOptionFromDropdown(this.formCostCurrencyInput, {label: productData.cost_currency});
 
         // Then fill in the Stock Data section.
         await this.fillInput(this.formStockQuantityInput, productData.stock_quantity);
@@ -119,9 +119,9 @@ class ProductsPage extends BasePage {
         await this.fillInput(this.formBundleQuantityInput, productData.bundle_quantity);
 
         // Fill in the Specific Product Taxes section
-        await this.clickBtn(this.formTaxCat1Checkbox);
-        await this.clickBtn(this.formTaxCat2Checkbox);
-        await this.clickBtn(this.formTaxCat3Checkbox);
+        await this.fillCheckbox(this.formTaxCat1Checkbox);
+        await this.fillCheckbox(this.formTaxCat2Checkbox);
+        await this.fillCheckbox(this.formTaxCat3Checkbox);
 
         // Finally, submit the form
         await this.clickBtn(this.submitBtn);

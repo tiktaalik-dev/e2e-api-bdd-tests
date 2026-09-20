@@ -41,7 +41,7 @@ test.describe.serial('Testing the edition of product data with valid and invalid
         await productArea.searchProduct(firstProductData.prod_name);
 
         // Click on the first result
-        await productArea.clickBtn(productArea.listingFirstRowNameCell);
+        await productArea.clickBtn(productArea.listingFirstResultCell);
 
         // Store the current URL
         currentURL = await productArea.page.url();

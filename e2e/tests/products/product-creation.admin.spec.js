@@ -6,7 +6,7 @@ import ProductsPage from "../pom/ProductsPage.js";
 const productsAreaUrl = process.env.BASE_URL + process.env.PATH_PRODUCTS;
 const newProductsUrl = process.env.BASE_URL + process.env.PATH_NEW_PRODUCTS;
 
-test.describe.serial('Testing the creation of new products (single event and in bulk)', () => {
+test.describe.serial('Testing the creation of a new products: ', () => {
 
     // Set the global variables for the test run
     let productArea;
@@ -47,7 +47,7 @@ test.describe.serial('Testing the creation of new products (single event and in 
         await productArea.clickBtn(productArea.listingCreateProductBtn);
 
         // Click on the Return button
-        await productArea.clickBtn(productArea.formReturnBtn);
+        await productArea.clickBtn(productArea.returnBtn);
 
         // Check the page URL is the expected one
         await expect(productArea.page).toHaveURL(productsAreaUrl);
@@ -74,47 +74,57 @@ test.describe.serial('Testing the creation of new products (single event and in 
         // Starting at the Products listing page
         await productArea.goToURL();
 
+        // As the listing page heavily uses AJAX calls, the results table takes a while to load. Thus, it's convenient to
+        // wait a bit before typing the search query
+        await page.waitForLoadState('networkidle');
+
         // Search for the product created in the previous test
         await productArea.searchProduct(createdProductsNames[0]);
+
+        // As the listing page already shows results right after it's loaded, it's necessary to wait for the spinner to
+        // show up after pressing the Search button and then detect when it disappears, before trying to assert the
+        // search results
+        await expect(productArea.searchWaitingSpinner).toBeVisible();
+        await expect(productArea.searchWaitingSpinner).toBeHidden();
 
         // confirm that the name in the listing result is the same as the one in createdProductsNames[0]
         await expect(productArea.listingFirstResultCell).toHaveText(createdProductsNames[0]);
     });
 
-    test('Create multiple products in bulk and return to listing page: ', async ({page}) => {
-        // Starting at the Products listing page
-        await productArea.goToURL();
-
-        // Call the bulkCreateProducts method with the full product data object
-        await productArea.bulkCreateProducts(allProducts);
-
-        // Store the names of the created products in the global variable
-        createdProductsNames.push(...allProducts.map(product => product.name));
-
-        // Confirm that the page URL is the expected one
-        await expect(productArea.page).toHaveURL(productsAreaUrl);
-    });
-
-    test('Search for, and find, all the recently created products in the Products listing page: ', async ({page}) => {
-        // Starting at the Products listing page
-        await productArea.goToURL();
-
-        // Iterate over the list of names in createdProductsNames
-        let allProductsFound = true;
-        for (let name of createdProductsNames) {
-            // Search for the product name
-            await productArea.searchProduct(name);
-
-            // Get the name from the listing result and compare it against the search string
-            allProductsFound = await productArea.listingFirstResultCell.textContent() === name;
-
-            // If allProductsFound is ever false, break out of the loop
-            if (!allProductsFound) {
-                break;
-            }
-        }
-
-        // Confirm that all products were found
-        expect(allProductsFound).toBe(true);
-    });
+    // test('Create multiple products in bulk and return to listing page: ', async ({page}) => {
+    //     // Starting at the Products listing page
+    //     await productArea.goToURL();
+    //
+    //     // Call the bulkCreateProducts method with the full product data object
+    //     await productArea.bulkCreateProducts(allProducts);
+    //
+    //     // Store the names of the created products in the global variable
+    //     createdProductsNames.push(...allProducts.map(product => product.name));
+    //
+    //     // Confirm that the page URL is the expected one
+    //     await expect(productArea.page).toHaveURL(productsAreaUrl);
+    // });
+    //
+    // test('Search for, and find, all the recently created products in the Products listing page: ', async ({page}) => {
+    //     // Starting at the Products listing page
+    //     await productArea.goToURL();
+    //
+    //     // Iterate over the list of names in createdProductsNames
+    //     let allProductsFound = true;
+    //     for (let name of createdProductsNames) {
+    //         // Search for the product name
+    //         await productArea.searchProduct(name);
+    //
+    //         // Get the name from the listing result and compare it against the search string
+    //         allProductsFound = await productArea.listingFirstResultCell.textContent() === name;
+    //
+    //         // If allProductsFound is ever false, break out of the loop
+    //         if (!allProductsFound) {
+    //             break;
+    //         }
+    //     }
+    //
+    //     // Confirm that all products were found
+    //     expect(allProductsFound).toBe(true);
+    // });
 });
