@@ -43,6 +43,8 @@ class BasePage {
   }
 
   async selectOptionFromDropdown(selector, optionValue) {
+    // Some dropdowns in this site seem to not be reactive unless clicked on first, so do it
+    await selector.click();
     await selector.selectOption(optionValue);
   }
 
