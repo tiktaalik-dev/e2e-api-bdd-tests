@@ -1,0 +1,24 @@
+[
+	{
+    "sku": "1234.9876.1973",
+    "name": "Sheep fodder",
+    "stock_quantity": 100,
+    "cost_price": 1000,
+    "sale_price": 1500,
+    "unit": "KG",
+    "is_active": true,
+    "line": "37",
+    "category": "53",
+    "taxes": [1, 2, 3],
+    "description": "Food for sheep",
+    "owner_manufacturing": false,
+    "cost_date": "2026-09-10",
+    "purchase_price": 1000,
+    "multiplier": 1,
+    "cost_currency": "1",
+    "min_stock_level": 1,
+    "on_order_quantity": 1,
+    "supplier_delay_days": 1,
+    "quantity_per_bundle": 5
+	}
+]

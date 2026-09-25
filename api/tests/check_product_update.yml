@@ -1,0 +1,85 @@
+info:
+  name: Check Product Details Update
+  type: http
+  seq: 6
+
+http:
+  method: get
+  url: "{{productURL}}"
+  headers:
+    - name: Accept
+      value: application/json
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        // Get the base domain variable
+        const baseUrl = bru.interpolate("{{process.env.BASEURL}}");
+
+        // Get the dynamic ID set when creating the product
+        const productId = bru.getEnvVar("productId");
+
+        // Build the complete path string manually
+        const fullPath = `${baseUrl}api/products/${productId}`;
+
+        // Save the URL as a global variable
+        bru.setEnvVar("productURL", fullPath);
+
+        // Log the URL built above
+        console.log("--- CLI NETWORK URL DISPATCHED ---");
+        console.log(fullPath);
+    - type: tests
+      code: |-
+        // Capture the response in a convenient constant
+        const body = res.body;
+
+        // Only proceed if the body includes a product data object
+        if ("data" in body) {
+
+          // Create an alias for the product data block
+          const data = body.data;
+
+          // Check whether the server returned a Product ID
+          test("Server returned a Product ID", function () {
+            expect(data).to.have.property("id");
+          });
+
+          // Check that the ID is an integer
+          test("Product ID returned is an Integer", function () {  
+            expect(Number.isInteger(data.id)).to.be.true;
+          });
+
+          // Check the response to confirm the product data matches what 
+          // was requested
+            test("Response includes mandatory product data", function () { 
+              expect(data).to.include.keys("sku", "name", "line", "category");
+            });
+          
+          // Check that the current Product Name value is 
+          // different from what it was when the product was 
+          // created the first time
+          test("Check that the updated Product Name is different from the original one when it was created", function () {
+            let originalProductName = bru.getEnvVar("originalProductName");
+            expect(data.name).to.not.equal(originalProductName);
+          })
+          
+          } else {
+            throw new Error("The server response did not contain Product Data!");
+          }
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+      description: Request was successful.
+    - expression: res.body
+      operator: isJson
+      description: Response contains JSON data.
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

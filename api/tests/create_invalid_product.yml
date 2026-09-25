@@ -1,0 +1,60 @@
+info:
+  name: Create an Invalid Product
+  type: http
+  seq: 8
+
+http:
+  method: post
+  url: "{{process.env.BASEURL}}/:path"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  params:
+    - name: path
+      value: api/products
+      type: path
+  body:
+    type: json
+    data: |-
+      {  
+          "sku": "{{sku}}",
+          "name": "{{name}}",
+          "stock_quantity": {{stock_quantity}},
+          "cost_price": {{cost_price}},
+          "sale_price": {{sale_price}},
+          "unit": "{{unit}}",
+          "is_active": {{is_active}},
+          "line": "{{line}}",
+          "category": "{{category}}",
+          "taxes": {{taxes}},
+          "description": "{{description}}",
+          "owner_manufacturing": {{owner_manufacturing}},
+          "cost_date": "{{cost_date}}",
+          "purchase_price": {{purchase_price}},
+          "multiplier": {{multiplier}},
+          "cost_currency": "{{cost_currency}}",
+          "min_stock_level": {{min_stock_level}},
+          "on_order_quantity": {{on_order_quantity}},
+          "supplier_delay_days": {{supplier_delay_days}},
+          "quantity_per_bundle": {{quantity_per_bundle}}
+      }
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "422"
+      description: Request failed to create a new product.
+    - expression: res.body
+      operator: isJson
+      description: Response contains JSON data.
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

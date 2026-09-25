@@ -1,0 +1,32 @@
+{
+  "name": "testing",
+  "variables": [
+    {
+      "name": "productName",
+      "value": "Sheep fodder",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    },
+    {
+      "name": "productId",
+      "value": 7870,
+      "type": "text",
+      "enabled": true,
+      "secret": false,
+      "dataType": "number"
+    },
+    {
+      "name": "productURL",
+      "value": "https://back-imcoarca.leonardojose.dev/api/products/7870",
+      "type": "text",
+      "enabled": true,
+      "secret": false
+    }
+  ],
+  "info": {
+    "type": "bruno-environment",
+    "exportedAt": "2026-09-10T04:49:25.175Z",
+    "exportedUsing": "Bruno/v4.1.0"
+  }
+}

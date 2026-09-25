@@ -1,0 +1,38 @@
+info:
+  name: List Created Product
+  type: http
+  seq: 4
+
+http:
+  method: get
+  url: "{{process.env.BASEURL}}/:path?term={{productName}}&sort_direction=asc"
+  params:
+    - name: term
+      value: "{{productName}}"
+      type: query
+    - name: sort_direction
+      value: asc
+      type: query
+    - name: path
+      value: api/products
+      type: path
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+      description: Request was successful
+    - expression: res.body
+      operator: isJson
+      description: Response contains JSON data
+    - expression: res.body.data
+      operator: isDefined
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

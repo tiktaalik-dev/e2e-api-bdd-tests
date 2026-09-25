@@ -1,0 +1,58 @@
+info:
+  name: Login
+  type: http
+  seq: 1
+
+http:
+  method: post
+  url: "{{process.env.BASEURL}}/:path"
+  headers:
+    - name: Content-Type
+      value: application/json
+  params:
+    - name: path
+      value: api/login
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+        "email":"{{process.env.ADMIN_USERNAME}}",
+        "password":"{{process.env.ADMIN_PWD}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        // 1. Parse the JSON response body
+        const responseData = res.body;
+
+        // 2. Extract the token
+        const token = responseData.access_token;
+
+        // 3. Save it to the collection variables
+        if (token) {
+          bru.setVar("TokenID", token);
+        } else {
+          throw new Error("Authentication failed: Token not found in response.");
+        }
+  assertions:
+    - expression: res.body
+      operator: isJson
+      description: Check that the body contains valid JSON data.
+    - expression: res.body.access_token
+      operator: isString
+      description: Check that the Token ID provided is a string.
+    - expression: res.status
+      operator: eq
+      value: "200"
+      description: Request was successful
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

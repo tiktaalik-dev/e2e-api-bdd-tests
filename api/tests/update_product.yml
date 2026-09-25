@@ -1,0 +1,193 @@
+info:
+  name: Update Product Details
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: "{{productURL}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+    - name: Accept
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+         "id": {{id}},
+         "name": "{{name}}",
+         "sku": "{{sku}}",
+         "description": "{{description}}",
+         "is_active": {{is_active}},
+         "line": {{line}},
+         "line_name": "{{line_name}}",
+         "category": {{category}},
+         "category_name": "{{category_name}}",
+         "cost_price": "{{cost_price}}",
+         "purchase_price": {{purchase_price}},
+         "purchase_cost": {{purchase_cost}},
+         "cost_currency": "{{cost_currency}}",
+         "cost_date": "{{cost_date}}",
+         "sale_price": "{{sale_price}}",
+         "multiplier": {{multiplier}},
+         "stock_quantity": {{stock_quantity}},
+         "on_order_quantity": {{on_order_quantity}},
+         "min_stock_level": {{min_stock_level}},
+         "supplier_delay_days": {{supplier_delay_days}},
+         "unit": "{{unit}}",
+         "quantity_per_bundle": {{quantity_per_bundle}},
+         "monthly_sales": {{monthly_sales}},
+         "last_remit": {{last_remit}},
+         "last_sale_date": {{last_sale_date}},
+         "legacy_numart": {{legacy_numart}},
+         "compute_1": {{compute_1}},
+         "compute_2": {{compute_2}},
+         "compute_3": {{compute_3}},
+         "owner_manufacturing": {{owner_manufacturing}},
+         "created_at": "{{created_at}}",
+         "updated_at": "{{updated_at}}",
+         "taxes": {{taxes}}
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        // Get the base domain variable
+        const baseUrl = bru.interpolate("{{process.env.BASEURL}}");
+
+        // Get the dynamic ID set when creating the product
+        const productId = bru.getEnvVar("productId");
+
+        // Build the complete path string manually
+        const fullPath = `${baseUrl}api/products/${productId}`;
+
+        // Save the URL as a global variable
+        bru.setEnvVar("productURL", fullPath);
+
+        // Log the URL built above
+        console.log("--- CLI NETWORK URL DISPATCHED ---");
+        console.log(fullPath);
+    - type: tests
+      code: |-
+        // Define an auxiliary function to build test statements
+        function createComparisonTest(dataArray) {
+          for (const [propertyName, originalData, responseData] of dataArray) {
+            test(`Property value from JSON file matched response value for: ${propertyName}`, function () {
+              expect(originalData).to.equal(responseData);
+            })
+              }
+        }
+          
+        // Capture the response in a convenient constant
+        const body = res.body;
+
+        // Capture the json data from the batch file into convenient variables
+        let getRunVars = bru.runner.iterationData.get;
+        let sku = getRunVars("sku");
+        let prodName = getRunVars("name");
+        let stockQuantity = Number(getRunVars("stock_quantity"));
+        let costPrice = getRunVars("cost_price");
+        let salePrice = getRunVars("sale_price");
+        let unit = getRunVars("unit");
+        let isActive = getRunVars("is_active");
+        let line = getRunVars("line");
+        let category = getRunVars("category");
+        let taxes = getRunVars("taxes");
+        let description = getRunVars("description");
+        let ownerMade = getRunVars("owner_manufacturing");
+        let costDate = getRunVars("cost_date");
+        let purchasePrice = getRunVars("purchase_price");
+        let multiplier = getRunVars("multiplier");
+        let costCurrency = getRunVars("cost_currency");
+        let minStock = getRunVars("min_stock_level");
+        let orderQuantity = getRunVars("on_order_quantity");
+        let delayDays = getRunVars("supplier_delay_days");
+        let nPerBundle = getRunVars("quantity_per_bundle");
+
+        // Only proceed if the body includes a product data object
+        if ("data" in body) {
+
+          // Create an alias for the product data block
+          const data = body.data;
+
+          // Map all variables of data sent against the ones received 
+          // in the response. Though some original properties must be
+          // ommitted because they are usually not returned properly 
+          // by the server even though the product is created 
+          // successfully: 
+          // sale_price (returned as a string and with 2 decimals),
+          // cost_price (returned as a string and with 2 decimals),
+          // purchase_price (returned as null),
+          // taxes (not returned as an array of integers but instead as 
+          // an object under the key "relatedTaxes"), 
+          // owner_manufacturing (returned as null),
+          // cost_date (always returns the current date instead),
+          // multiplier (returned as null).
+          let mappedValues = [
+            ["sku", sku, data.sku],
+            ["name", prodName, data.name],
+            ["stock_quantity", stockQuantity, data.stock_quantity],
+            ["unit", unit, data.unit],
+            ["is_active", isActive, data.is_active],
+            ["line", line, data.line],
+            ["category", category, data.category],
+            ["description", description, data.description],
+            ["cost_currency", costCurrency, data.cost_currency],
+            ["min_stock_level", minStock, data.min_stock_level],
+            ["on_order_quantity", orderQuantity, data.on_order_quantity],
+            ["supplier_delay_days", delayDays, data.supplier_delay_days],
+            ["quantity_per_bundle", nPerBundle, data.quantity_per_bundle]
+          ];
+
+          // Check whether the server returned a Product ID
+          test("Server returned a Product ID", function () {
+            expect(data).to.have.property("id");
+          });
+
+          // Check that the ID is an integer
+          test("Product ID returned is an Integer", function () {  
+            expect(Number.isInteger(data.id)).to.be.true;
+          });
+
+          // Check the response to confirm the product data matches what 
+          // was requested
+            test("Response includes mandatory product data", function () { 
+              expect(data).to.include.keys("sku", "name", "line", "category");
+            });
+          
+          // Automatically create a test for each value
+          createComparisonTest(mappedValues);
+          
+          // Check that the current Product Name value is 
+          // different from what it was when the product was 
+          // created the first time
+          test("Check that the updated Product Name is different from the original one when it was created", function () {
+            let originalProductName = bru.getEnvVar("originalProductName");
+            expect(data.name).to.not.equal(originalProductName);
+          })
+          
+          } else {
+            throw new Error("The server response did not contain Product Data!");
+          }
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+      description: Request was successful.
+    - expression: res.body
+      operator: isJson
+      description: Response contains JSON data.
+    - expression: res.body.data
+      operator: isJson
+    - expression: res.body.data.id
+      operator: isNumber
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
