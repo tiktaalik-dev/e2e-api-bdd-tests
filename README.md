@@ -11,8 +11,28 @@ Files are organised as tests, specs, POM (Page Object Model), test reports, and 
 │       ├── bruno.yml
 │       └── playwright.yml
 ├── api/
+│   ├── data/
+│       ├── product-invalid_data.json
+│       ├── product-valid_data.json
+│       └── product-valid_update_data.json
+│   ├── environments/
+│       └── testing.json
 │   ├── reports/
-│   └── tests/
+│       ├── results-creation.html
+│       ├── results-invalid-creation.html
+│       └── results-updating.html
+│   ├── tests/
+│       ├── check_product_update.yml
+│       ├── create_invalid_product.yml
+│       ├── create_product.yml
+│       ├── delete_product.yml
+│       ├── list_all_products.yml
+│       ├── list_created_product.yml
+│       ├── login.yml
+│       └── update_product.yml
+│   ├── .env    # This file is ignored by Git
+│   ├── opencollection.yml
+│   └── README.md   # Reference documentation for the API tests
 ├── bdd/
 │   ├── login.feature
 │   └── register.feature
@@ -65,7 +85,7 @@ Files are organised as tests, specs, POM (Page Object Model), test reports, and 
 ├── package.json
 ├── package-lock.json
 ├── playwright.config.ts          # Playwright config file
-├── README.md
+├── README.md   # Reference documentation for the project in general
 ```
 
 The `bdd/` folder contains Gherkin behaviour specs (BDD) that document app

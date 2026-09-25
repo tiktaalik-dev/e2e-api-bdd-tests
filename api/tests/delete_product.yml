@@ -1,0 +1,44 @@
+info:
+  name: Delete Product
+  type: http
+  seq: 7
+
+http:
+  method: delete
+  url: "{{productURL}}"
+  headers:
+    - name: Content-Type
+      value: application/json
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        // Get the base domain variable
+        const baseUrl = bru.interpolate("{{process.env.BASEURL}}");
+
+        // Get the dynamic ID set when creating the product
+        const productId = bru.getEnvVar("productId");
+
+        // Build the complete path string manually
+        const fullPath = `${baseUrl}api/products/${productId}`;
+
+        // Save the URL as a global variable
+        bru.setEnvVar("productURL", fullPath);
+
+        // Log the URL built above
+        console.log("--- CLI NETWORK URL DISPATCHED ---");
+        console.log(fullPath);
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "204"
+      description: Request was successful.
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

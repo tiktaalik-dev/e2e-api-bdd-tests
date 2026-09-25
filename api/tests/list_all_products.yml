@@ -1,0 +1,36 @@
+info:
+  name: List All Products
+  type: http
+  seq: 2
+
+http:
+  method: get
+  url: "{{process.env.BASEURL}}/:path?sort_direction=asc"
+  params:
+    - name: sort_direction
+      value: asc
+      type: query
+    - name: path
+      value: api/products
+      type: path
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.status
+      operator: eq
+      value: "200"
+      description: Request was successful
+    - expression: res.body
+      operator: isJson
+      description: Response contains JSON data
+    - expression: res.body.data
+      operator: isArray
+      description: Response contains an array of products
+
+settings:
+  encodeUrl: false
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

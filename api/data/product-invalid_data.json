@@ -1,0 +1,24 @@
+[
+	{
+    "sku": "",
+    "name": "Pig fodder (Premium)",
+    "stock_quantity": 20,
+    "cost_price": 500,
+    "sale_price": 700,
+    "unit": "KG",
+    "is_active": true,
+    "line": "37",
+    "category": "53",
+    "taxes": [1, 2, 3],
+    "description": "Food for sheep - Fortified",
+    "owner_manufacturing": false,
+    "cost_date": "2026-09-13",
+    "purchase_price": 1000,
+    "multiplier": "1",
+    "cost_currency": "1",
+    "min_stock_level": 1,
+    "on_order_quantity": 1,
+    "supplier_delay_days": 1,
+    "quantity_per_bundle": "random text"
+	}
+]
